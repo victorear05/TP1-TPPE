@@ -1,9 +1,7 @@
 package classes;
 
 import java.util.GregorianCalendar;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class Venda {
     private Cliente cliente;
@@ -14,10 +12,8 @@ public class Venda {
     private Double valorDesconto;
     private Double valorImpostos;
     private Double valorFinal;
-    private Double frete; 
-//    private String tipoRegiao; 
 
-    public Venda(Cliente cliente, List<Produto> itensVendidos, GregorianCalendar dataVenda, String metodoPagamento, String regiao, String tipoRegiao) {
+    public Venda(Cliente cliente, List<Produto> itensVendidos, GregorianCalendar dataVenda, String metodoPagamento) {
         this.cliente = cliente;
         this.itensVendidos = itensVendidos;
         this.dataVenda = dataVenda;
@@ -26,7 +22,6 @@ public class Venda {
         this.valorDesconto = 0.0;
         this.valorImpostos = 0.0;
         this.valorFinal = this.calculaValorFinal();
-        this.frete = this.freteRegiao(regiao, tipoRegiao); 
     }
 
     private Double calculaSubtotal(List<Produto> itensVendidos) {
@@ -116,18 +111,4 @@ public class Venda {
     public void setValorFinal(Double valorFinal) {
         this.valorFinal = valorFinal;
     }
-    
-    public double freteRegiao(String regiao,String tipoRegiao) {
-    	var fretes = new HashMap<>() {{	
-            put("Distrito Federal", new double[] {5.00, 0.00}); 
-            put("Regiao Centro-oeste", new double[] {10.00, 13.00});
-            put("Regiao Nordeste", new double[] {15.00, 18.00});
-            put("Regiao Norte", new double[] {20.00, 25.00});
-            put("Regiao Sudeste", new double[] {7.00, 10.00});
-            put("Regiao Sul", new double[] {10.00, 13.00});
-        }};
-        
-        return (double) fretes.get((tipoRegiao == "interior") ? 0 : 1);    
-    }
-    
 }
