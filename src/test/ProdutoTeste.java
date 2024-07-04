@@ -30,9 +30,12 @@ public class ProdutoTeste {
 
     @Parameters
     public static Collection<Object[]> getParameters() {
-        return Arrays.asList(new Object[][] {
-                { new Produto(242, "Teclado Mecânico", 109.99, "unidade"), 242, "Teclado Mecânico", 109.99, "unidade" }
-        });
+        return Arrays.asList(
+        		new Object[][] { 
+        			{ 
+        				new Produto(242, "Teclado Mecânico", 109.99, "unidade"), 
+        				242, "Teclado Mecânico", 109.99, "unidade" } 
+        			});
     }
 
     @Test

@@ -2,7 +2,7 @@ package classes;
 
 public class Produto {
     private Integer codigoItem;
-    private String descricao;
+	private String descricao;
     private Double valor;
     private String unidade;
 
@@ -14,34 +14,34 @@ public class Produto {
     }
 
     public Integer getCodigoItem() {
-        return this.codigoItem;
-    }
+		return codigoItem;
+	}
 
-    public String getDescricao() {
-        return this.descricao;
-    }
+	public void setCodigoItem(Integer codigoItem) {
+		this.codigoItem = codigoItem;
+	}
 
-    public Double getValor() {
-        return this.valor;
-    }
+	public String getDescricao() {
+		return descricao;
+	}
 
-    public String getUnidade() {
-        return this.unidade;
-    }
+	public void setDescricao(String descricao) {
+		this.descricao = descricao;
+	}
 
-    public void setCodigoItem(Integer codigoItem) {
-        this.codigoItem = codigoItem;
-    }
+	public Double getValor() {
+		return valor;
+	}
 
-    public void setDescricao(String descricao) {
-        this.descricao = descricao;
-    }
+	public void setValor(Double valor) {
+		this.valor = valor;
+	}
 
-    public void setValor(Double valor) {
-        this.valor = valor;
-    }
+	public String getUnidade() {
+		return unidade;
+	}
 
-    public void setUnidade(String unidade) {
-        this.unidade = unidade;
-    }
+	public void setUnidade(String unidade) {
+		this.unidade = unidade;
+	}
 }

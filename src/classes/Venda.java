@@ -5,110 +5,149 @@ import java.util.List;
 
 public class Venda {
     private Cliente cliente;
-    private List<Produto> itensVendidos;
+	private List<Produto> itensVendidos;
     private GregorianCalendar dataVenda;
     private String metodoPagamento;
-    private Double subTotal;
-    private Double valorDesconto;
-    private Double valorImpostos;
+    private String cartao;
+	private Double valorTotal;
+    private Double valorDescontos;
+    private Double valorTaxas;
     private Double valorFinal;
+    private Double valorCashback;
 
-    public Venda(Cliente cliente, List<Produto> itensVendidos, GregorianCalendar dataVenda, String metodoPagamento) {
+    public Venda(
+    		Cliente cliente, List<Produto> itensVendidos, GregorianCalendar dataVenda, 
+    		String metodoPagamento, String cartao
+    		) {
         this.cliente = cliente;
         this.itensVendidos = itensVendidos;
         this.dataVenda = dataVenda;
         this.metodoPagamento = metodoPagamento;
-        this.subTotal = this.calculaSubtotal(itensVendidos);
-        this.valorDesconto = 0.0;
-        this.valorImpostos = 0.0;
-        this.valorFinal = this.calculaValorFinal();
+        this.cartao = cartao;
+        this.valorTotal = calcularValorTotal(itensVendidos);
+        this.valorDescontos = calcularValorDescontos(cliente, metodoPagamento, cartao);
+        this.valorTaxas = calcularValorTaxas(cliente);
+        this.valorFinal = calcularValorFinal();
+        this.valorCashback = calcularValorCashback(cliente, metodoPagamento, cartao);
     }
 
-    private Double calculaSubtotal(List<Produto> itensVendidos) {
-        Double subTotal = itensVendidos.stream()
+    private Double calcularValorTotal(List<Produto> itensVendidos) {
+        Double valorTotal = itensVendidos.stream()
                 .map(Produto::getValor)
                 .reduce(0.0, Double::sum);
-        return subTotal;
+        return valorTotal;
     }
 
-    private Double calculaValorDesconto(Cliente cliente, List<Produto> itensVendidos, String metodoPagamento) {
-        Double descontoCartaoEmpresa = this.descontoCartaoEmpresa(metodoPagamento);
-        return 0.0;
+    private Double calcularValorDescontos(Cliente cliente, String metodoPagamento, String cartao) {
+    	Double descontoCartao;
+    	if (metodoPagamento == "cartao" && cartao.substring(0, 6) == "429613") {
+    		descontoCartao = 0.1;
+    	} else {
+    		descontoCartao = 0.0;
+    	}
+    	
+    	return getValorTotal() * (cliente.getDescontoEspecial() + descontoCartao);
     }
 
-    private Double descontoCartaoEmpresa(String metodoPagamento) {
-        return 0.0;
+    private Double calcularValorTaxas(Cliente cliente) {
+    	Double taxas = cliente.getTaxaIcms() + cliente.getTaxaImunicipal();
+        return getValorTotal() * taxas + cliente.getValorFrete();
     }
 
-    private Double calculaValorImpostos(Cliente cliente, List<Produto> itensVendidos) {
-        return 0.0;
+    private Double calcularValorFinal() {
+        return getValorTotal() - getValorDescontos() + getValorTaxas();
     }
 
-    private Double calculaValorFinal() {
-        return ((this.subTotal + this.valorImpostos) - this.valorDesconto);
+    private Double calcularValorCashback(
+    		Cliente cliente, String metodoPagamento, String cartao
+    		) {
+    	Double cashbackRealCartao;
+    	if (metodoPagamento == "cartao" && cartao.substring(0, 6) == "429613") {
+    		cashbackRealCartao = 0.05;
+    	} else {
+    		cashbackRealCartao = 0.0;
+    	}
+    	
+    	return Math.floor(getValorTotal()) * (cliente.getCashbackReal() + cashbackRealCartao);
     }
-
+    
     public Cliente getCliente() {
-        return cliente;
-    }
+		return cliente;
+	}
 
-    public void setCliente(Cliente cliente) {
-        this.cliente = cliente;
-    }
+	public void setCliente(Cliente cliente) {
+		this.cliente = cliente;
+	}
 
-    public List<Produto> getItensVendidos() {
-        return itensVendidos;
-    }
+	public List<Produto> getItensVendidos() {
+		return itensVendidos;
+	}
 
-    public void setItensVendidos(List<Produto> itensVendidos) {
-        this.itensVendidos = itensVendidos;
-    }
+	public void setItensVendidos(List<Produto> itensVendidos) {
+		this.itensVendidos = itensVendidos;
+	}
 
-    public GregorianCalendar getDataVenda() {
-        return dataVenda;
-    }
+	public GregorianCalendar getDataVenda() {
+		return dataVenda;
+	}
 
-    public void setDataVenda(GregorianCalendar dataVenda) {
-        this.dataVenda = dataVenda;
-    }
+	public void setDataVenda(GregorianCalendar dataVenda) {
+		this.dataVenda = dataVenda;
+	}
 
-    public String getMetodoPagamento() {
-        return metodoPagamento;
-    }
+	public String getMetodoPagamento() {
+		return metodoPagamento;
+	}
 
-    public void setMetodoPagamento(String metodoPagamento) {
-        this.metodoPagamento = metodoPagamento;
-    }
+	public void setMetodoPagamento(String metodoPagamento) {
+		this.metodoPagamento = metodoPagamento;
+	}
 
-    public Double getSubTotal() {
-        return subTotal;
-    }
+	public String getCartao() {
+		return cartao;
+	}
 
-    public void setSubTotal(Double subTotal) {
-        this.subTotal = subTotal;
-    }
+	public void setCartao(String cartao) {
+		this.cartao = cartao;
+	}
 
-    public Double getValorDesconto() {
-        return valorDesconto;
-    }
+	public Double getValorTotal() {
+		return valorTotal;
+	}
 
-    public void setValorDesconto(Double valorDesconto) {
-        this.valorDesconto = valorDesconto;
-    }
+	public void setValorTotal(Double valorTotal) {
+		this.valorTotal = valorTotal;
+	}
 
-    public Double getValorImpostos() {
-        return valorImpostos;
-    }
+	public Double getValorDescontos() {
+		return valorDescontos;
+	}
 
-    public void setValorImpostos(Double valorImpostos) {
-        this.valorImpostos = valorImpostos;
-    }
+	public void setValorDescontos(Double valorDescontos) {
+		this.valorDescontos = valorDescontos;
+	}
 
-    public Double getValorFinal() {
-        return valorFinal;
-    }
+	public Double getValorTaxas() {
+		return valorTaxas;
+	}
 
-    public void setValorFinal(Double valorFinal) {
-        this.valorFinal = valorFinal;
-    }
+	public void setValorTaxas(Double valorTaxas) {
+		this.valorTaxas = valorTaxas;
+	}
+
+	public Double getValorFinal() {
+		return valorFinal;
+	}
+
+	public void setValorFinal(Double valorFinal) {
+		this.valorFinal = valorFinal;
+	}
+
+	public Double getValorCashback() {
+		return valorCashback;
+	}
+
+	public void setValorCashback(Double valorCashback) {
+		this.valorCashback = valorCashback;
+	}
 }
