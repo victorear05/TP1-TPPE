@@ -4,68 +4,84 @@ import static org.junit.Assert.assertEquals;
 
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.GregorianCalendar;
-import java.util.List;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameters;
 
-import classes.Cliente;
-import classes.Produto;
 import classes.Venda;
-import test.mock.MockCliente;
-import test.mock.MockProduto;
+import test.mock.MockVenda;
 
 @RunWith(Parameterized.class)
 public class VendaTeste {
     private Venda venda;
-    private Cliente cliente;
-    private List<Produto> itensVendidos;
-    private GregorianCalendar dataVenda;
-    private String metodoPagamento;
     private Double subTotal;
     private Double valorDesconto;
-    private Double valorImpostos;
+    private Double valorTaxas;
     private Double valorFinal;
+    private Double valorCashback;
 
-    public VendaTeste(Venda venda, Cliente cliente, List<Produto> itensVendidos, GregorianCalendar dataVenda,
-            String metodoPagamento,
-            Double subTotal, Double valorDesconto, Double valorImpostos, Double valorFinal) {
+    public VendaTeste(Venda venda, Double subTotal, Double valorDesconto, Double valorTaxas, Double valorCashback,
+            Double valorFinal) {
         this.venda = venda;
-        this.cliente = cliente;
-        this.itensVendidos = itensVendidos;
-        this.dataVenda = dataVenda;
-        this.metodoPagamento = metodoPagamento;
         this.subTotal = subTotal;
         this.valorDesconto = valorDesconto;
-        this.valorImpostos = valorImpostos;
+        this.valorTaxas = valorTaxas;
+        this.valorCashback = valorCashback;
         this.valorFinal = valorFinal;
+
     }
 
     @Parameters
     public static Collection<Object[]> getParameters() {
-        // TODO: Trocar valorDesconto, valorImpostos, valorFinal
+
         return Arrays.asList(new Object[][] {
-				/*
-				 * { new Venda( MockCliente.getClientePadrao(), MockProduto.getProdutos(), new
-				 * GregorianCalendar(2023, 6, 2), "4296 1310 1123 1416" ),
-				 * MockCliente.getClientePadrao(), MockProduto.getProdutos(), new
-				 * GregorianCalendar(2023, 6, 2), "4296 1310 1123 1416", 339.98, 0.0, 0.0,
-				 * 339.98 }
-				 */
+                {
+                        MockVenda.getVendaPadraoCartaoLoja(), 339.98, (339.98 * 0.1), ((339.98 * 0.18) + 5.0),
+                        (339.98 * 0.05), 372.1784
+                },
+                {
+                        MockVenda.getVendaEspecialCartaoNaoLoja(), 339.98, (339.98 * 0.1), ((339.98 * 0.16) + 7.0), 0.0,
+                        367.3788
+                },
+                {
+                        MockVenda.getVendaEspecialCartaoLoja(), 339.98, (339.98 * 0.2), ((339.98 * 0.16) + 7.0),
+                        (339.98 * 0.05), 333.3808
+                },
+                {
+                        MockVenda.getVendaPrimeCartaoLoja(), 339.98, (339.98 * 0.1), ((339.98 * 0.16)), (339.98 * 0.08),
+                        360.3788
+                },
+                {
+                        MockVenda.getVendaPrimeDinheiro(), 339.98, 0.0, ((339.98 * 0.16)), (339.98 * 0.03), 394.3768
+                }
+
         });
     }
 
     @Test
-    public void subTotalTest() {
-        assertEquals(this.subTotal, venda.getValorTotal());
+    public void calcularSubTotalTest() {
+        assertEquals(this.subTotal, venda.getSubTotal());
     }
 
     @Test
-    public void valorFinalTest() {
+    public void calcularValorFinalTest() {
         assertEquals(this.valorFinal, venda.getValorFinal());
     }
 
+    @Test
+    public void calcularValorDescontosTest() {
+        assertEquals(this.valorDesconto, venda.getValorDescontos());
+    }
+
+    @Test
+    public void calcularValorTaxasTest() {
+        assertEquals(this.valorTaxas, venda.getValorTaxas());
+    }
+
+    @Test
+    public void calcularValorCashbackTest() {
+        assertEquals(this.valorCashback, venda.getValorCashback());
+    }
 }

@@ -11,7 +11,6 @@ public class MockProduto {
         return Arrays.asList(
                 new Produto(242, "Teclado Mecânico", 109.99, "unidade"),
                 new Produto(241, "Mouse", 219.99, "unidade"),
-                new Produto(240, "Tecla", 10.00, "peça")
-                );
+                new Produto(240, "Tecla", 10.00, "peça"));
     }
 }
