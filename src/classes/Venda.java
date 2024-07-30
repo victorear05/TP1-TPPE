@@ -18,13 +18,14 @@ public class Venda {
 	public Venda(
 			Cliente cliente, List<Produto> itensVendidos, GregorianCalendar dataVenda,
 			String metodoPagamento, String cartao) {
+		Double subTotal = calcularSubTotal(itensVendidos);
 		this.cliente = cliente;
 		this.itensVendidos = itensVendidos;
 		this.dataVenda = dataVenda;
 		this.metodoPagamento = metodoPagamento;
 		this.cartao = cartao;
-		this.subTotal = calcularSubTotal(itensVendidos);
-		this.valorDescontos = calcularValorDescontos(cliente, metodoPagamento, cartao);
+		this.subTotal = subTotal;
+		this.valorDescontos = new CalculadoraDescontos(itensVendidos, cliente, metodoPagamento, cartao, subTotal).calcular();
 		this.valorTaxas = calcularValorTaxas(cliente);
 		this.valorFinal = calcularValorFinal();
 		this.valorCashback = calcularValorCashback(cliente, metodoPagamento, cartao);
@@ -35,17 +36,6 @@ public class Venda {
 				.map(Produto::getValor)
 				.reduce(0.0, Double::sum);
 		return subTotal;
-	}
-
-	private Double calcularValorDescontos(Cliente cliente, String metodoPagamento, String cartao) {
-		Double descontoCartao;
-		if (metodoPagamento.equals("cartao") && cartao.substring(0, 6).equals("429613")) {
-			descontoCartao = 0.1;
-		} else {
-			descontoCartao = 0.0;
-		}
-
-		return this.getSubTotal() * (cliente.getDescontoEspecial() + descontoCartao);
 	}
 
 	private Double calcularValorTaxas(Cliente cliente) {
