@@ -55,58 +55,40 @@ public class Cliente {
 			return 0.0;
 		}
 
-		Double valorFrete;
-		switch (regiao) {
-			case "Distrito Federal":
-				valorFrete = 5.0;
-				break;
-			case "Região Centro-oeste":
-				if (capital) {
-					valorFrete = 10.0;
-				} else {
-					valorFrete = 13.0;
-				}
-				break;
-			case "Região Nordeste":
-				if (capital) {
-					valorFrete = 15.0;
-				} else {
-					valorFrete = 18.0;
-				}
-				break;
-			case "Região Norte":
-				if (capital) {
-					valorFrete = 20.0;
-				} else {
-					valorFrete = 25.0;
-				}
-				break;
-			case "Região Sudeste":
-				if (capital) {
-					valorFrete = 7.0;
-				} else {
-					valorFrete = 10.0;
-				}
-				break;
-			case "Região Sul":
-				if (capital) {
-					valorFrete = 10.0;
-				} else {
-					valorFrete = 13.0;
-				}
-				break;
-			default:
-				valorFrete = 0.0;
-		}
+		Double valorFrete = this.definirValorFretePorRegiao(regiao);
+
+		return this.aplicarDescontoFreteTipoCliente(tipoCliente, valorFrete);
+	}
+
+	private Double aplicarDescontoFreteTipoCliente(String tipoCliente, Double valorFrete) {
 
 		switch (tipoCliente) {
 			case "prime":
-				valorFrete = 0.0;
+				return 0.0;
 			case "especial":
-				valorFrete -= valorFrete * 0.3;
+				return (valorFrete * 0.7);
+			default:
+				return valorFrete;
 		}
+	}
 
-		return valorFrete;
+	private Double definirValorFretePorRegiao(String regiao) {
+		switch (regiao) {
+			case "Distrito Federal":
+				return 5.0;
+			case "Região Centro-oeste":
+				return capital ? 10.0 : 13.0;
+			case "Região Nordeste":
+				return capital ? 15.0 : 18.0;
+			case "Região Norte":
+				return capital ? 20.0 : 25.0;
+			case "Região Sudeste":
+				return capital ? 7.0 : 10.0;
+			case "Região Sul":
+				return capital ? 10.0 : 13.0;
+			default:
+				return 0.0;
+		}
 	}
 
 	private Double definirCashbackReal(Boolean prime) {
