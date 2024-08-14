@@ -6,10 +6,11 @@ public class Transportadora {
 
     public Transportadora(String regiao, boolean capital
     ){      
+    	this.capital = capital; 
         this.valorFrete = definirValorFretePorRegiao(regiao);
     }
 
-    public Double definirValorFretePorRegiao(String regiao)
+    public Double definirValorFretePorRegiao(String regiao) {
 		switch (regiao) {
 			case "Distrito Federal":
 				return 5.0;
