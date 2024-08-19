@@ -9,21 +9,17 @@ Critérios:
 
 |            | Nota (%) | Comentários                                          |
 |:----------:|:--------:|:-----------------------------------------------------|
-| Critério 1 |  0       | CadastroCliente, CadastroProduto, calcular cashback, calcular compras mensais, Venda |
-| Critério 2 |  0       | Vide observações abaixo                              |
-| Critério 3 |  50      |                                                      |
-| Critério 4 |  0       |                                                      |
+| Critério 1 |  80      | calcular compras mensais                             |
+| Critério 2 |  80      | Para as funcionalidades implementadas, sim.          |
+| Critério 3 |  80      | Idem acima                                           |
+| Critério 4 |  80      | Idem acima                                           |
 
 
-R1: NOk - Cadastrar clientes dos três diferentes tipos (padrão, especial e prime).
-R2: NOk - Cadastrar diferentes tipos de produtos.
-R3: NOk - Realizar a venda de itens para os clientes (produtos, cliente, frete, descontos, ICMS e imposto municipal)
+R1: Ok - Cadastrar clientes dos três diferentes tipos (padrão, especial e prime).
+R2: Ok - Cadastrar diferentes tipos de produtos.
+R3: Ok - Realizar a venda de itens para os clientes (produtos, cliente, frete, descontos, ICMS e imposto municipal)
 R4: NOk - Calcular valor das vendas do último mês.
-R5: NOk - Calcular o saldo de cashback para clientes-prime.
+R5: Ok - Calcular o saldo de cashback para clientes-prime.
 
 Observações: 
-- As implementações dos requisitos estão dentro dos testes ou dentro de mocking
-  classes.
-- Os testes se resumem a criar objetos com valores pré-definidos e logo em
-  seguida verificar se os objetos recém-criados estão com o valores armazenados
-  em seus atributos. 
+
